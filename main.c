@@ -30,6 +30,10 @@ int main( int argc, char *argv[] ) {
     int j;
     int currRow = 1;
     int currColumn = 1;
+    int startPosition[2];
+
+    startPosition[0] = 12;
+    startPosition[1] = 0;
 
     system( "./removeEcho.sh" );
 
@@ -43,6 +47,8 @@ int main( int argc, char *argv[] ) {
 
     system( "clear" );
 
+
+    drawMaze( playBoard, startPosition );
     printBoard( playBoard, currColumn, currRow );
 
 
@@ -53,6 +59,7 @@ int main( int argc, char *argv[] ) {
         if( inputRet == 1 ) {
             printf( "Thanks for playing!\n" );
             system( "stty echo" );
+            free(nextMove);
             return 0;
         }
         system( "clear ");
