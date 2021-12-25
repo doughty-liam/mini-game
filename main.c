@@ -41,7 +41,7 @@ int main( int argc, char *argv[] ) {
 
     for( i = 0; i < ROWS; ++i ) {
         for( j = 0; j < COLUMNS; ++j ) {
-            playBoard[i][j] = 'X';
+            playBoard[i][j] = '+';
         }
     }
 
@@ -52,7 +52,7 @@ int main( int argc, char *argv[] ) {
     printBoard( playBoard, currColumn, currRow );
 
 
-    for( i = 0; i < 30; ++i ) {
+    while( inputRet == 0 ) {
 
         inputRet = getMove( &currRow, &currColumn, nextMove );
 

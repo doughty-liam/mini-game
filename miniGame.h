@@ -3,8 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
-#define ROWS 35
-#define COLUMNS 80
+#define ROWS 40
+#define COLUMNS 95
 
 
 int printBoard( char playBoard[ROWS][COLUMNS], int playerRow, int playerCol ) {
@@ -57,11 +57,13 @@ int getMove( int *currRow, int *currCol, char *nextMove ) { /* gets user input, 
 
 int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
 
+    /* previousMove 1 = down, 2 = forward, 3 = up */
     int i, j;
     int nextPos[2];
     int atEnd = 0;
     int moveDir = 1;
     srand(time(0));
+    int previousMove;
 
 
     i = 0;
@@ -81,12 +83,12 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
 
             nextPos[0] = currPos[0] + 1;
             nextPos[1] = currPos[1];
-
-        } else if (currPos[0] > 32) {
+            previousMove = 1;
+        } else if (currPos[0] > 37) {
 
             nextPos[0] = currPos[0] - 1;
             nextPos[1] = currPos[1];
-
+            previousMove = 3;
         } else {
 
             /* Any move direction is possible. up, down, or forwards. */
@@ -95,12 +97,15 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
             if( moveDir == 1 ) {
                 nextPos[0] = currPos[0];
                 nextPos[1] = currPos[1] + 1;
+                previousMove = 2;
             } else if( moveDir == 2 ) {
                 nextPos[0] = currPos[0] - 1;
                 nextPos[1] = currPos[1];
+                previousMove = 3;
             } else if( moveDir == 3 ) {
                 nextPos[0] = currPos[0] + 1;
                 nextPos[1] = currPos[1];
+                previousMove = 1;
             }
         }
 
@@ -127,13 +132,15 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
 
             nextPos[0] = currPos[0] + 1;
             nextPos[1] = currPos[1];
+            previousMove = 1;
 
-        } else if (currPos[0] > 32) {
+        } else if (currPos[0] > 37) {
 
             nextPos[0] = currPos[0] - 1;
             nextPos[1] = currPos[1];
+            previousMove = 3;
 
-        }else if ( (currPos[1] > 77) || (currPos[1] < 2) || (currPos[0] > 32) ) {
+        }else if ( (currPos[1] > 92) || (currPos[1] < 2) || (currPos[0] > 37) ) {
 
             /* at the RHS or LHS, ENDING */
             atEnd = 1;
@@ -146,12 +153,15 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
             if( moveDir == 1 ) {
                 nextPos[0] = currPos[0];
                 nextPos[1] = currPos[1] + 1;
+                previousMove = 2;
             } else if( moveDir == 2 ) {
                 nextPos[0] = currPos[0] - 1;
                 nextPos[1] = currPos[1];
+                previousMove = 3;
             } else if( moveDir == 3 ) {
                 nextPos[0] = currPos[0] + 1;
                 nextPos[1] = currPos[1];
+                previousMove = 1;
             }
         }
 
