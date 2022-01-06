@@ -59,6 +59,7 @@ int main( int argc, char *argv[] ) {
         if( inputRet == 1 ) {
             printf( "Thanks for playing!\n" );
             system( "stty echo" );
+            system( "rm move.txt" );
             free(nextMove);
             return 0;
         }
