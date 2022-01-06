@@ -92,21 +92,73 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
         } else {
 
             /* Any move direction is possible. up, down, or forwards. */
-            moveDir = ( (rand())%(3-1+1) ) + 1;
+            moveDir = ( (rand())%6 ) + 1;
 
             if( moveDir == 1 ) {
-                nextPos[0] = currPos[0];
-                nextPos[1] = currPos[1] + 1;
-                previousMove = 2;
-            } else if( moveDir == 2 ) {
-                nextPos[0] = currPos[0] - 1;
-                nextPos[1] = currPos[1];
-                previousMove = 3;
-            } else if( moveDir == 3 ) {
                 nextPos[0] = currPos[0] + 1;
                 nextPos[1] = currPos[1];
+                previousMove = 2;
+            } else if( moveDir == 2 ) {
+                nextPos[0] = currPos[0];
+                nextPos[1] = currPos[1] + 1;
+                previousMove = 3;
+            } else if( moveDir == 3 ) {
+                nextPos[0] = currPos[0] - 1;
+                nextPos[1] = currPos[1];
                 previousMove = 1;
+            } else if( (moveDir == 4) && (currPos[0] >= 3) && (currPos[1] <= 90) ) { /* upwards U shape */ 
+
+                nextPos[1] = currPos[1];
+                nextPos[0] = nextPos[0] - 1;
+                playBoard[nextPos[0]][nextPos[1]] = ' ';
+
+                nextPos[0] = nextPos[0] - 1;
+                playBoard[nextPos[0]][nextPos[1]] = ' ';
+
+                nextPos[1] = nextPos[1] + 1;
+                playBoard[nextPos[0]][nextPos[1]] = ' ';
+
+                nextPos[1] = nextPos[1] + 1;
+                playBoard[nextPos[0]][nextPos[1]] = ' ';
+                
+                nextPos[1] = nextPos[1] + 1;
+                playBoard[nextPos[0]][nextPos[1]] = ' ';
+                
+                nextPos[1] = nextPos[1] + 1;
+                playBoard[nextPos[0]][nextPos[1]] = ' ';
+                
+                nextPos[0] = nextPos[0] + 1;
+                playBoard[nextPos[0]][nextPos[1]] = ' ';
+
+                nextPos[0] = nextPos[0] + 1;
+                nextPos[1] = nextPos[1];                
+
+            } else if ( (moveDir == 5) && (currPos[1] <= 90) ) { /* straight forward 3 units */
+                
+                nextPos[1] = currPos[1];
+                for( i = 0; i < 2; ++ i ) {
+                    nextPos[1] = nextPos[1] + 1;
+                    playBoard[nextPos[0]][nextPos[1]] = ' '; 
+                }
+                nextPos[0] = currPos[0];
+                nextPos[1] = nextPos[1] + 1;
+            
+            } else if ( (moveDir == 6) && (currPos[0] <= 90) && (currPos[1] >= 35 ) ) { /* Downwards L shape */  
+                
+                nextPos[0] = currPos[0];
+                nextPos[1] = currPos[1];
+                for( i = 0; i < 4; ++i ) {
+                    nextPos[0] = nextPos[0] + 1;
+                    playBoard[nextPos[0]][nextPos[1]] = ' ';
+                }
+
+                nextPos[1] = nextPos[1] + 1;
+                playBoard[nextPos[0]][nextPos[1]] = ' ';
+                
+                nextPos[1] = nextPos[1] + 1;
+
             }
+
         }
 
         currPos[0] = nextPos[0];
@@ -151,15 +203,15 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
             moveDir = ( (rand())%(3-1+1) ) + 1;
 
             if( moveDir == 1 ) {
-                nextPos[0] = currPos[0];
-                nextPos[1] = currPos[1] + 1;
+                nextPos[0] = currPos[0] + 1;
+                nextPos[1] = currPos[1];
                 previousMove = 2;
             } else if( moveDir == 2 ) {
-                nextPos[0] = currPos[0] - 1;
-                nextPos[1] = currPos[1];
+                nextPos[0] = currPos[0];
+                nextPos[1] = currPos[1] + 1;
                 previousMove = 3;
             } else if( moveDir == 3 ) {
-                nextPos[0] = currPos[0] + 1;
+                nextPos[0] = currPos[0] - 1;
                 nextPos[1] = currPos[1];
                 previousMove = 1;
             }
@@ -167,7 +219,6 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
 
         currPos[0] = nextPos[0];
         currPos[1] = nextPos[1];
-
 
     }
 
