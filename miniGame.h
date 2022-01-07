@@ -37,8 +37,7 @@ int getMove( int *currRow, int *currCol, char *nextMove ) { /* gets user input, 
     fp = fopen( "move.txt", "r" );
     fscanf( fp, "%c", nextMove );
 
-    /* fscanf( stdin, "%c", nextMove ); getting next move from stdin
-    getc( stdin ); */
+    /* NEED TO ENSURE PLAYER IS NOT AT THE EDGE OF BOARD OR TRYING TO MOVE INTO A WALL */
 
     if( *nextMove == 'w' ) {
         (*currRow) = (*currRow) - 1;
@@ -104,9 +103,11 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
                 nextPos[0] = currPos[0] - 1;
                 nextPos[1] = currPos[1];
                 
-            } else if( (moveDir == 4) && (currPos[0] >= 3) && (currPos[1] <= 88) ) { /* upwards U shape */ 
+            } else if( (moveDir == 4) && (currPos[0] >= 5) && (currPos[1] <= 85) ) { /* upwards U shape */ 
 
                 nextPos[1] = currPos[1];
+                nextPos[0] = currPos[0];
+
                 nextPos[0] = nextPos[0] - 1;
                 playBoard[nextPos[0]][nextPos[1]] = 32;
 
@@ -128,12 +129,13 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
                 nextPos[0] = nextPos[0] + 1;
                 playBoard[nextPos[0]][nextPos[1]] = 32;
 
-                nextPos[0] = nextPos[0] + 1;
-                nextPos[1] = nextPos[1];                
+                nextPos[0] = nextPos[0] + 1;              
 
-            } else if ( (moveDir == 5) && (currPos[1] <= 90) ) { /* straight forward 3 units */
+            } else if ( (moveDir == 5) && (currPos[1] <= 88) ) { /* straight forward 3 units */
                 
                 nextPos[1] = currPos[1];
+                nextPos[0] = currPos[0];
+
                 for( i = 0; i < 2; ++ i ) {
                     nextPos[1] = nextPos[1] + 1;
                     playBoard[nextPos[0]][nextPos[1]] = ' '; 
@@ -141,7 +143,7 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
                 nextPos[0] = currPos[0];
                 nextPos[1] = nextPos[1] + 1;
             
-            } else if ( (moveDir == 6) && (currPos[0] <= 33) && (currPos[1] <= 90 ) ) { /* Downwards L shape */  
+            } else if ( (moveDir == 6) && (currPos[0] <= 30) && (currPos[1] <= 85 ) ) { /* Downwards L shape */  
                 
                 nextPos[0] = currPos[0];
                 nextPos[1] = currPos[1];
@@ -150,6 +152,9 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
                     playBoard[nextPos[0]][nextPos[1]] = ' ';
                 }
 
+                nextPos[1] = nextPos[1] + 1;
+                playBoard[nextPos[0]][nextPos[1]] = ' ';
+                    
                 nextPos[1] = nextPos[1] + 1;
                 playBoard[nextPos[0]][nextPos[1]] = ' ';
                 
@@ -168,8 +173,8 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
     /* RUNNING ALGORITHM MULTIPLE TIMES */
     for( j = 0; j < 10; ++j ) {
         /* Set start position of near top border */
-        currPos[0] = ((rand()%(38-2+1)))+2;
-        currPos[1] = 1;
+        currPos[0] = ((rand()%(36-4+1)))+4;
+        currPos[1] = 4;
         atEnd = 0;
 
         while( atEnd == 0 ) {
@@ -178,12 +183,12 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
 
 
             /* checking if the current position is near top or bottom edge */
-            if( currPos[0] < 2 ) {
+            if( currPos[0] <= 3 ) {
 
                 nextPos[0] = currPos[0] + 1;
                 nextPos[1] = currPos[1];
 
-            } else if (currPos[0] > 37) {
+            } else if (currPos[0] >= 37) {
 
                 nextPos[0] = currPos[0] - 1;
                 nextPos[1] = currPos[1];
@@ -211,13 +216,21 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
                 } else if( moveDir == 3 ) {
                     nextPos[0] = currPos[0] - 1;
                     nextPos[1] = currPos[1];
-                } else if( (moveDir == 4) && (currPos[0] >= 3) && (currPos[1] <= 88) ) { /* upwards U shape */ 
+                } else if( (moveDir == 4) && (currPos[0] >= 5) && (currPos[1] <= 85) ) { /* upwards U shape */ 
 
                     nextPos[1] = currPos[1];
+                    nextPos[0] = currPos[0];
+
                     nextPos[0] = nextPos[0] - 1;
                     playBoard[nextPos[0]][nextPos[1]] = 32;
 
                     nextPos[0] = nextPos[0] - 1;
+                    playBoard[nextPos[0]][nextPos[1]] = 32;
+
+                    nextPos[1] = nextPos[1] + 1;
+                    playBoard[nextPos[0]][nextPos[1]] = 32;
+
+                    nextPos[1] = nextPos[1] + 1;
                     playBoard[nextPos[0]][nextPos[1]] = 32;
 
                     nextPos[1] = nextPos[1] + 1;
@@ -238,9 +251,11 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
                     nextPos[0] = nextPos[0] + 1;
                     nextPos[1] = nextPos[1];                
 
-                } else if ( (moveDir == 5) && (currPos[1] <= 90) ) { /* straight forward 3 units */
+                } else if ( (moveDir == 5) && (currPos[1] <= 88) ) { /* straight forward 3 units */
                     
                     nextPos[1] = currPos[1];
+                    nextPos[0] = currPos[0];
+
                     for( i = 0; i < 2; ++ i ) {
                         nextPos[1] = nextPos[1] + 1;
                         playBoard[nextPos[0]][nextPos[1]] = ' '; 
@@ -248,7 +263,7 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
                     nextPos[0] = currPos[0];
                     nextPos[1] = nextPos[1] + 1;
                 
-                } else if ( (moveDir == 6) && (currPos[0] <= 33 ) && (currPos[1] >= 90 ) ) { /* Downwards L shape */  
+                } else if ( (moveDir == 6) && (currPos[0] <= 30 ) && (currPos[1] <= 85 ) ) { /* Downwards L shape */  
                     
                     nextPos[0] = currPos[0];
                     nextPos[1] = currPos[1];
@@ -256,6 +271,9 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
                         nextPos[0] = nextPos[0] + 1;
                         playBoard[nextPos[0]][nextPos[1]] = ' ';
                     }
+
+                    nextPos[1] = nextPos[1] + 1;
+                    playBoard[nextPos[0]][nextPos[1]] = ' ';
 
                     nextPos[1] = nextPos[1] + 1;
                     playBoard[nextPos[0]][nextPos[1]] = ' ';
