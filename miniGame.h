@@ -171,7 +171,7 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
 
     /* INITIAL MAZE DRAWN, NOW NEED TO MAKE IT MORE COMPLICATED... */
     /* RUNNING ALGORITHM MULTIPLE TIMES */
-    for( j = 0; j < 10; ++j ) {
+    for( j = 0; j < 5; ++j ) {
         /* Set start position of near top border */
         currPos[0] = ((rand()%(36-4+1)))+4;
         currPos[1] = 4;
@@ -256,7 +256,7 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
                     nextPos[1] = currPos[1];
                     nextPos[0] = currPos[0];
 
-                    for( i = 0; i < 2; ++ i ) {
+                    for( i = 0; i < 2; ++ i ) {            playBoard[currPos[0]][currPos[1]] = 32;
                         nextPos[1] = nextPos[1] + 1;
                         playBoard[nextPos[0]][nextPos[1]] = ' '; 
                     }
@@ -287,6 +287,78 @@ int drawMaze( char playBoard[ROWS][COLUMNS], int currPos[2] ) {
             currPos[0] = nextPos[0];
             currPos[1] = nextPos[1];
         }
+    }
+
+    /* creating paths from top to bottom */
+    for( i = 0; i < 12; ++i ) {
+
+        currPos[0] = 3;
+        currPos[1] = ((rand()%(90-5+1)))+5;
+        atEnd = 0;
+
+        while( atEnd == 0 ) {
+
+            playBoard[currPos[0]][currPos[1]] = 32;
+
+            nextPos[0] = currPos[0];
+            nextPos[1] = currPos[1];
+
+            /* checking if near any edge of the board */
+            if( nextPos[0] <= 3 ) {
+
+                nextPos[0] = nextPos[0] + 1;
+
+            } else if( nextPos[1] <= 3 ) {
+
+                nextPos[1] = nextPos[1] + 1;
+
+            } else if( nextPos[1] >= 92 ) {
+
+                nextPos[1] = nextPos[1] - 1;
+
+            } else if( nextPos[0] >= 36 ) {
+                
+                atEnd = 1;
+
+            } else { /* Next position can be in any direction */
+                
+                moveDir = ( (rand())%6 ) + 1;
+                
+                if( moveDir == 1 ) {
+
+                    nextPos[0] = nextPos[0] + 1;
+
+                } else if( moveDir == 2 ) {
+
+                    nextPos[1] = nextPos[1] - 1;
+
+                } else if( moveDir == 3 ) {
+
+                    nextPos[1] = nextPos[1] + 1;
+
+                } else if( (moveDir == 4) && (nextPos[0] <= 30) ) {
+
+                    for( j = 0; j < 3; ++j ) {
+
+                        nextPos[0] = nextPos[0] + 1;
+                        playBoard[nextPos[0]][nextPos[1]] = 32;
+
+                    }
+
+                    nextPos[1] = nextPos[1] - 1;
+                    playBoard[nextPos[0]][nextPos[1]] = 32;
+                    
+                    nextPos[1] = nextPos[1] - 1;
+
+                }
+            }
+
+            currPos[0] = nextPos[0];
+            currPos[1] = nextPos[1];
+
+        }
+        
+
     }
 
     return 0;
